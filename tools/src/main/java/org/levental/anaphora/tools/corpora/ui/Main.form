@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.levental.anaphora.tools.corpora.ui.Main">
+  <grid id="27dc6" binding="main" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <toolbar id="546a3">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="10b37" class="javax.swing.JButton" binding="saveButton">
+            <constraints/>
+            <properties>
+              <icon value="img/save.png"/>
+              <opaque value="false"/>
+              <text value=""/>
+              <toolTipText value="save"/>
+            </properties>
+          </component>
+          <component id="46905" class="javax.swing.JButton" binding="previousButton">
+            <constraints/>
+            <properties>
+              <icon value="img/up.png"/>
+              <text value=""/>
+              <toolTipText value="previous"/>
+            </properties>
+          </component>
+          <component id="3199" class="javax.swing.JButton" binding="nextButton">
+            <constraints/>
+            <properties>
+              <icon value="img/down.png"/>
+              <text value=""/>
+              <toolTipText value="find next"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+    </children>
+  </grid>
+</form>

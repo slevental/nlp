@@ -1,0 +1,24 @@
+Phase: TripleMatcher
+Input: Sentence Chunk Token
+Options: control = appelt
+
+Rule: SubjectRule
+(
+    {Chunk.roleInSentence ==~ "NP.*",
+     Token.category       ==~ "NN.*"}
+):subject
+-->
+{
+  AnnotationSet s = (AnnotationSet) bindings.get("subject");
+  Annotation sentence = inputAS.get("Sentence", s.firstNode().getOffset(), s.lastNode().getOffset()).iterator().next();
+
+  Boolean hasSubject = (Boolean)sentence.getFeatures().get("hasSubject");
+  if (hasSubject != Boolean.TRUE){
+        FeatureMap features = Factory.newFeatureMap();
+        outputAS.add(s.firstNode(), s.lastNode(), "Subject", features);
+        sentence.getFeatures().put("hasSubject", Boolean.TRUE);
+  } else {
+        outputAS.add(s.firstNode(), s.lastNode(), "Object", Factory.newFeatureMap());
+  }
+}
+

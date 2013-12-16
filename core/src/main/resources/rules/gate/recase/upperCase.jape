@@ -1,0 +1,14 @@
+Phase: TripleMatcher
+Input: Sentence Chunk Token
+Options: control = appelt
+
+Rule: ObjectRule
+(
+    {}
+    {Chunk.roleInSentence ==~ "VP.*"}
+):predicate
+(
+    {Chunk.roleInSentence ==~ "NP.*"}
+):object
+-->
+:object.Object = { rule = ObjectRule}

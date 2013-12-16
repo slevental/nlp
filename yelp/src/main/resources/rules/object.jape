@@ -1,0 +1,99 @@
+Phase: TripleMatcher
+Input: Sentence Token Location
+Options: control = appelt
+
+Rule: PropertyRule1
+({Token.category == RB})?
+(
+    {Token.category ==~ "JJ.?"}
+):adj
+(
+    ( {Token.category == "NN"}
+    | {Token.category == "NNS"})
+):prop
+-->
+:prop.Property = { rule = PropertyRule1, adjective = :adj@string  }
+
+Rule: PropertyRule2
+(
+    ({Token.category ==~ "NN.?"})+
+):prop
+(
+    (
+        {Token.category == PRP}
+    )?
+    (
+        {Token.string == "is"} |
+        {Token.string == "are"} |
+        {Token.string == "was"} |
+        {Token.string == "were"} |
+        {Token.string == "'s"}
+    )
+)
+({Token.category == RB})?
+(
+    {Token.category ==~ "JJ.?"}
+):adj
+-->
+:prop.Property = { rule = PropertyRule2, adjective = :adj@string  }
+
+
+Rule: PropertyRuleStar
+(
+    {Token.category ==~ "CD"}
+    {Token.string == "star"}
+):adj
+(
+    {Token.string == "for"}
+    ({Token.category == DT})?
+    ({Token.category == RB})?
+    ({Token.category == JJ})?
+)
+(
+    {Token.category ==~ "NN.?"}
+):prop
+-->
+:prop.Property = { rule = PropertyRuleStar, adjective = :adj@string  }
+
+Rule: PropertyRuleStyle
+(
+    ({Location})+
+):adj
+(
+    {Token.string == "style"}
+)
+(
+    {Token.category ==~ "NN.?"}
+):prop
+-->
+:prop.Property = { rule = PropertyRuleStyle, adjective = :adj@string  }
+
+
+Rule: PropertyRule3
+(
+      {Token.relation != null, Token.category ==~ "PRP"}
+):pron
+(
+    (
+        {Token.string == "is"} |
+        {Token.string == "are"} |
+        {Token.string == "was"} |
+        {Token.string == "were"} |
+        {Token.string == "'s"}
+    )
+)
+({Token.category == RB})?
+(
+    {Token.category ==~ "JJ.?"}
+):adj
+-->
+{
+  gate.Annotation ann = (Annotation)((AnnotationSet) bindings.get("pron")).iterator().next().getFeatures().get("relation");
+  String str = (String)((AnnotationSet) bindings.get("adj")).iterator().next().getFeatures().get("string");
+  if (ann != null){
+        FeatureMap map = Factory.newFeatureMap();
+        map.put("adjective", str);
+        map.put("string", ann.getFeatures().get("string"));
+        outputAS.add(ann.getStartNode(), ann.getEndNode(), "Property", map);
+  }
+}
